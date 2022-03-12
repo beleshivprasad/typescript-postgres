@@ -1,18 +1,29 @@
-const express = require('express');
-require("dotenv").config();
-import {connectDB} from "./Database/connectDB";
-const userRoute:any= require("./Routes/userRoutes");
+//----devlopement only-----
+console.clear();
+//----devlopement only-----
+
+import express from "express";
+import { connectDB } from "./database/connectDB";
+import { router as userRoute } from "./routes/userRoutes";
+import path from "path";
+import dotenv from "dotenv";
+
+dotenv.config({ path: path.join(__dirname, "./config/.env") });
+
+//Creating Express App
 const app = express();
+
+//Connection to Database
 connectDB();
+
+//Setting Up Middleware
 app.use(express.json());
 
+//Setting Up Routes
+//User Routes
+app.use("/", userRoute);
 
-
-
-
-
-app.use("/user" ,userRoute);
-
-app.listen(3036, ()=>{
-    console.log("Listening the port at 3036");
+//Starting  App on the Port
+app.listen(process.env.appPORT, () => {
+  console.log(`Server Running at http://localhost:${process.env.appPORT}`);
 });
